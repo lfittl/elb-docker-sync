@@ -8,11 +8,11 @@ You might find this useful if you are not using ECS and/or are running your Dock
 ## Usage
 
 ```
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -m 256m lfittl/elb-docker-sync:latest docker-container-prefix,elb-name
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -m 256m lfittl/elb-docker-sync:latest docker-container-prefix,my-elb-target-group
 ```
 
 The above will start this helper in the background and synchronize all Docker containers whose name
-starts with `docker-container-prefix` into the ELB named `elb-name`.
+starts with `docker-container-prefix` into the ELB target group named `my-elb-target-group`.
 
 Note that your containers will need to have their ports exposed, e.g. by passing the `-P` flag when starting.
 You don't have to keep the same port number over time.
@@ -20,7 +20,7 @@ You don't have to keep the same port number over time.
 ## Rolling Deploys
 
 In case you want to have a smooth rolling deploy of new versions, this helper optionally detects
-the version number contained in your container's name (must match the regexp /v\d+/).
+a version number contained in your container's name (must match the regexp /v\d+/).
 
 When a new version is detected as running, all previous versions will be deregistered from ELB
 already. This helps drain the connections and avoids requests going to the old containers about
